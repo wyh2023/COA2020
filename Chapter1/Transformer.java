@@ -6,27 +6,6 @@ import java.util.Arrays;
 //
 public class Transformer {
 
-    public static void main(String[] args){
-        Transformer transformer = new Transformer();
-        //float test = (float) ((float) Math.pow(2, -127));
-        float test = (float) -1.55717134475708E-6;
-        String flt = String.valueOf(test);
-        //System.out.println(flt);
-        String testStr = Integer.toBinaryString(Float.floatToRawIntBits(test));
-        //System.out.println(testStr.length());
-        StringBuilder stringBuilder = new StringBuilder();
-        for(int i=0; i<32-testStr.length(); i++){
-            stringBuilder.insert(0, "0");
-        }
-        stringBuilder.append(testStr);
-        System.out.println(transformer.binaryToFloat("10110101110100010000000000000000"));
-        System.out.println(stringBuilder.toString());
-        //System.out.println(transformer.decimalToNBCD("-451"));
-        //System.out.println(transformer.NBCDToDecimal("1101000000000000010001010001"));
-        System.out.println(transformer.floatToBinary(flt));
-        //System.out.println(str2flt("11110000000000000000000"));
-    }
-
     /**
      * Integer to binaryString
      *
@@ -112,7 +91,7 @@ public class Transformer {
 
         int exponent = 127;
 
-        Float num = Float.parseFloat(floatStr);
+        float num = Float.parseFloat(floatStr);
 
         if(num < 0){
             sign = "1";
