@@ -17,18 +17,6 @@ public class FPU {
     private char CF = '0';
 
     public static void main(String[] args) {
-        FPU fpu = new FPU();
-        Transformer transformer = new Transformer();
-        System.out.println(transformer.binaryToFloat("00111110111000000000000000000000"));
-        System.out.println(transformer.binaryToFloat("00111111001000000000000000000000"));
-        String a = transformer.floatToBinary("0.4375");
-        String b = transformer.floatToBinary("0.625");
-        //System.out.println(a);
-        //System.out.println(b);
-        String ans = fpu.div(a, b);
-        System.out.println(ans);
-
-        System.out.println(transformer.floatToBinary("0.7"));
     }
     /**
      * compute the float mul of a * b
@@ -144,6 +132,10 @@ public class FPU {
             return ansSign + "0000000000000000000000000000000";
         }
 
+        if(tmpCF == '1' && CF == '1'){
+            return ansSign + "1111111100000000000000000000000";
+        }
+
         ansFrac = divFrac(countB, countA).substring(0, 24);
 
         //Normalize
@@ -196,17 +188,6 @@ public class FPU {
             }
         }
         return add(String.valueOf(srcArr), dest);
-    }
-
-    int unsignedVal(String str){
-        int ret = 0;
-        int len = str.length();
-        for(int i=len-1; i>=0; i--){
-            if (str.charAt(i) == '1') {
-                ret += (1<<(len-1-i));
-            }
-        }
-        return ret;
     }
 
     public String mulFrac (String src, String dest){
