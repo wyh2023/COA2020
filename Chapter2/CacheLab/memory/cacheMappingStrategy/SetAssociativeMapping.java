@@ -79,7 +79,8 @@ public class SetAssociativeMapping extends MappingStrategy{
         int start = setNO * setSize;
         int end = (setNO + 1)*setSize;
         char[] tag = getTag(blockNO);
-        return replacementStrategy.Replace(start, end, tag, Memory.getMemory().read(t.intToBinary(String.valueOf(Cache.LINE_SIZE_B * blockNO)), Cache.LINE_SIZE_B));
+        char[] memory =Memory.getMemory().read(t.intToBinary(String.valueOf(Cache.LINE_SIZE_B * blockNO)), Cache.LINE_SIZE_B);
+        return replacementStrategy.Replace(start, end, tag, memory);
     }
 
     @Override

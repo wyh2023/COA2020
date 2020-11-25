@@ -31,7 +31,7 @@ public abstract class WriteStrategy {
         //TODO
         Cache cache = Cache.getCache();
         String pAddr = mappingStrategy.getPAddr(rowNo);
-        Memory.getMemory().writeBack(pAddr, cache.getData(rowNo));
+        Memory.getMemory().writeBackM(pAddr, cache.getData(rowNo));
     }
 
     public void setMappingStrategy(MappingStrategy mappingStrategy) {

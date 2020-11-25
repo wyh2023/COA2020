@@ -28,14 +28,7 @@ public class FIFOReplacement extends ReplacementStrategy {
         int index = 0;
         boolean isFull = true;
         for(int i=start; i<end; i++){
-            if(Cache.getCache().getTimeStamp(i) == -1L){
-                index = i;
-                isFull = false;
-                break;
-            }
-        }
-        for(int i=start; i<end; i++){
-            if(!Cache.getCache().getValid(i)){
+            if(Cache.getCache().getTimeStamp(i) == -1L || !Cache.getCache().getValid(i)){
                 index = i;
                 isFull = false;
                 break;
@@ -62,6 +55,10 @@ public class FIFOReplacement extends ReplacementStrategy {
         }
         if(Cache.getCache().getTimeStamp(index)==-1L){
             Cache.getCache().incTimeStamp(index);
+        }
+        if(Cache.getCache().getDirty(index)){
+            writeStrategy.writeBack(index);
+            Cache.getCache().setDirty(index, false);
         }
         Cache.getCache().updateCacheLine(index, addrTag, input);
         return index;

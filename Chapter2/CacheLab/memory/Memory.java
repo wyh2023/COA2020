@@ -30,13 +30,6 @@ public class Memory implements MemoryInterface {
 
     public void write(String eip, int len, char []data){
         // 通知Cache缓存失效
-        for(int i=0; i<1024; i++){
-            if(Cache.getCache().getDirty(i)) {
-                Cache.getCache().makeWB(i);
-                Cache.getCache().setDirty(i, false);
-            }
-        }
-        //Cache.getCache().writeBackJudge(eip, len);
         Cache.getCache().invalid(eip, len);
         // 更新数据
         for (int ptr=0; ptr<len; ptr++) {
@@ -44,7 +37,7 @@ public class Memory implements MemoryInterface {
         }
     }
 
-    public void writeBack(String eip, char[] data){
+    public void writeBackM(String eip, char[] data){
         for (int ptr=0; ptr<1024; ptr++) {
             memory[Integer.parseInt(new Transformer().binaryToInt(eip)) + ptr] = data[ptr];
         }

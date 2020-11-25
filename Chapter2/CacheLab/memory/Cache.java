@@ -50,23 +50,6 @@ public class Cache {	//
         System.out.println(Arrays.equals(third, dataRead));
         System.out.println(cache.checkStatus(new int[]{1, 0}, new boolean[]{true, true}, new char[][]{"0000000000000000000001".toCharArray(), "0000000100000000000000".toCharArray()}));
         cache.clear();
-
-
-        char[] input1 = new char[1024 * 1024];
-        char[] input2 = new char[1024];
-        Arrays.fill(input1, (char) 0b10001011);
-        Arrays.fill(input2, (char) 0b10101101);
-        String eip4 = "00000000000000000000000000000000";
-        String eip5 = "00000000000000000001110000000000";
-        memory.write(eip1, input1.length, input1);
-        dataRead = cache.read(eip4, input1.length);
-        System.out.println(Arrays.equals(input1, dataRead));
-        //eip2
-        memory.write(eip2, input2.length, input2);
-        dataRead = cache.read(eip5, input2.length);
-        System.out.println(Arrays.equals(input2, dataRead));
-        System.out.println(cache.checkStatus(new int[]{7}, new boolean[]{true}, new char[][]{"0000000000000000000111".toCharArray()}));
-        cache.clear();
     }
 
 	public static final boolean isAvailable = true;			// 默认启用Cache
@@ -169,6 +152,7 @@ public class Cache {	//
 
 	public void setStrategy(MappingStrategy mappingStrategy, ReplacementStrategy replacementStrategy, WriteStrategy writeStrategy) {
 		//TODO
+        replacementStrategy.setWriteStrategy(writeStrategy);
         this.mappingStrategy = mappingStrategy;
         this.mappingStrategy.setReplacementStrategy(replacementStrategy);
         this.writeStrategy = writeStrategy;
@@ -306,12 +290,20 @@ public class Cache {	//
         }
 	}
 
-	public void setDirty(int row, boolean b){
-	    this.cache.get(row).dirty = b;
+	public void setData(int row, char[] input) {
+	    this.cache.get(row).data = input;
     }
 
 	public char[] getTag(int row){
 	    return cache.get(row).tag;
+    }
+
+    public void setDirty(int row, boolean b){
+        this.cache.get(row).dirty = b;
+    }
+
+    public boolean getDirty(int row){
+	    return this.cache.get(row).dirty;
     }
 
 	public boolean isMatch(int lineNO, char[] tag){
@@ -344,7 +336,15 @@ public class Cache {	//
     }
 
     public boolean getValid(int row){
-	    return cache.get(row).validBit;
+        return cache.get(row).validBit;
+    }
+
+    public int getDataLen(int row){
+	    return cache.get(row).data.length;
+    }
+
+    public char[] getData(int row){
+	    return cache.get(row).data;
     }
 
     public static void checkAns(char[] input, char[] toBeChecked){
@@ -354,20 +354,6 @@ public class Cache {	//
     }
 
     public void makeWB(int i){
-        this.writeStrategy.writeBack(i);
+	    this.writeStrategy.writeBack(i);
     }
-
-    public void setData(int row, char[] input) {
-        this.cache.get(row).data = input;
-    }
-
-    public boolean getDirty(int row){
-        return this.cache.get(row).dirty;
-    }
-
-    public char[] getData(int row){
-        return cache.get(row).data;
-    }
-
-
 }
